@@ -6,7 +6,7 @@ const ResultSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        minlength: [5, '5 character long at least'],
+        // minlength:  [5, '5 character long at least'],
     },
     S1_Dummy: {
         type: Number,
@@ -17,67 +17,115 @@ const ResultSchema = new Schema({
     S3: {
         type: Number,
     },
-    vidDum: {
+    S4a: {
+        type: Number,
+    },
+    S4b: {
+        type: Number,
+    },
+    VidDum: {
         type: String,
     },
-    Q5r1: {
+    Q1: {
         type: String,
     },
-    Q6r1: {
+    Q2: {
+        type: String,
+    },
+    Q3r1: {
         type: Number,
     },
-    Q6r2: {
+    Q3r2: {
         type: Number,
     },
-    Q6r3: {
+    Q3r3: {
         type: Number,
     },
-    Q6r4: {
+    Q3r4: {
         type: Number,
     },
-    Q6r5: {
+    Q3r5: {
         type: Number,
     },
-    Q6r6: {
+    Q3r6: {
         type: Number,
     },
-    Q6r7: {
+    Q3r7: {
         type: Number,
     },
-    Q6r8: {
+    Q3r8: {
         type: Number,
     },
-    Q6r9: {
+    Q3r9: {
         type: Number,
     },
-    Q6r10: {
+    Q3r10: {
         type: Number,
     },
-    Q6r11: {
+    Q3r11: {
         type: Number,
     },
-    Q6r12: {
+    Q3r12: {
         type: Number,
     },
-    Q6r13: {
+    Q3r13: {
         type: Number,
     },
-    Q6r14: {
+    Q3r14: {
         type: Number,
     },
-    Q6r15: {
+    Q3r15: {
         type: Number,
     },
-    Q6r16: {
+    Q3r16: {
         type: Number,
     },
-    Q6r17: {
+    Q4r1: {
         type: Number,
     },
-    Q6r18: {
+    Q4r2: {
         type: Number,
     },
-    Q6r19: {
+    Q4r3: {
+        type: Number,
+    },
+    Q4r4: {
+        type: Number,
+    },
+    Q4r5: {
+        type: Number,
+    },
+    Q4r6: {
+        type: Number,
+    },
+    Q4r7: {
+        type: Number,
+    },
+    Q4r8: {
+        type: Number,
+    },
+    Q4r9: {
+        type: Number,
+    },
+    Q4r10: {
+        type: Number,
+    },
+    Q4r11: {
+        type: Number,
+    },
+    Q4r12: {
+        type: Number,
+    },
+    Q5o1: {
+        type: Number,
+    },
+    Q5o2: {
+        type: Number,
+    },
+    Q5o3: {
+        type: Number,
+    },
+    Q6: {
         type: Number,
     },
     Q7r1: {
@@ -110,49 +158,10 @@ const ResultSchema = new Schema({
     Q7r10: {
         type: Number,
     },
-    Q7r11: {
-        type: Number,
-    },
-    Q8r1: {
-        type: Number,
-    },
-    Q8r2: {
-        type: Number,
-    },
-    Q8r3: {
-        type: Number,
-    },
-    Q8r4: {
-        type: Number,
-    },
-    Q8r5: {
-        type: Number,
-    },
-    Q9: {
-        type: Number,
-    },
-    Q10ar1: {
-        type: String,
-    },
-    Q10br1: {
-        type: String,
-    },
-    Q11: {
+    Q8: {
         type: Number,
     },
     S5: {
-        type: Number,
-    },
-    S6: {
-        type: Number,
-    },
-    S7: {
-        type: Number,
-    },
-    S8: {
-        type: Number,
-    },
-    S9: {
         type: Number,
     },
 });

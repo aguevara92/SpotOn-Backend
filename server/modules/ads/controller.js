@@ -1,5 +1,6 @@
 import Ad from './model';
 import { Result } from '../results';
+import { KPI } from '../kpis';
 
 export const getSingleAd = async (req, res) => {
     const { adId } = req.params;
@@ -25,12 +26,13 @@ export const getSingleAd = async (req, res) => {
 
     // If there's a match
     try {
-        // get the results of this Ad
-        const thisResults = await Result.find({ vidDum: adId });
+        const thisResults = await Result.find({ VidDum: adId }); // get the results of this Ad
+        const thisKPIs = await KPI.find({ adID: adId }); // get the KPIs of this Ad
         return res.status(200).json({
             error: false,
             ad: thisAd[0], // return single ad
             results: thisResults, // return array of results
+            kpis: thisKPIs, // return array with KPIs
         });
     } catch (e) {
         return res.status(500).json({
@@ -78,6 +80,48 @@ export const createAd = async (req, res) => {
         }
         // If there are no errors, show in the console the Ad created
         res.status(201).send(thisAd);
+    });
+};
+
+export const updateAd = async (req, res) => {
+    // Get the Vars from the POST body
+    const {
+        adname,
+        shortname,
+        videourl,
+        industry,
+        brand,
+        country,
+        campaigndate,
+        lengthAd,
+        channel,
+        productionState,
+        state,
+    } = req.body;
+    // Create an instance of the Ad class
+    const newAd = new Ad({ adname, shortname, videourl, industry, brand, country, campaigndate, lengthAd, channel, productionState, state });
+
+    Ad.remove({ adname: req.body.adname }, () => {
+        newAd.save((err, thisAd) => {
+            if (err) {
+                // If there is an error, show it
+                res.status(500).send(err);
+            }
+            // If there are no errors, show in the console the Ad created
+            res.status(201).send(thisAd);
+        });
+    });
+};
+
+export const removeAd = async (req, res) => {
+    Ad.remove({ adname: req.body.adname }, (err) => {
+        if (err) {
+            // If there is an error, show it
+            res.status(500).send(err);
+        } else {
+            // If there are no errors, show in the console
+            res.status(200).json({ error: false, message: 'The Ad was deleted' });
+        }
     });
 };
 

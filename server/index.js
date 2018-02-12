@@ -1,7 +1,7 @@
 import express from 'express';
 import dbConfig from './config/db';
 import middlewareConfig from './config/middleware';
-import { AdsRoutes, ResultRoutes } from './modules';
+import { AdsRoutes, ResultRoutes, KPIsRoutes } from './modules';
 
 const app = express();
 const cors = require('cors');
@@ -21,7 +21,7 @@ middlewareConfig(app);
 app.options('*', cors());
 app.use(cors());
 
-app.use('/api', [AdsRoutes, ResultRoutes]);
+app.use('/api', [AdsRoutes, ResultRoutes, KPIsRoutes]);
 
 const PORT = process.env.PORT || 4000;
 
