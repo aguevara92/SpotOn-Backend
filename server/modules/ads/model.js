@@ -38,6 +38,12 @@ const AdsSchema = new Schema({
     state: {
         type: String,
     },
+    summary: {
+        type: String,
+    },
+    mainMessage: {
+        type: String,
+    },
 });
 
 /*

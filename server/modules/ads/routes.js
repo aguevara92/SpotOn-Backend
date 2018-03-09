@@ -4,12 +4,13 @@ import * as AdsController from './controller';
 const routes = new Router();
 
 // The word ADS is blocked by the ad-block
-routes.get('/single', AdsController.getAds);
-routes.get('/single/:adId', AdsController.getSingleAd);
-routes.post('/single/new', AdsController.createAd);
-routes.post('/single/update', AdsController.updateAd);
-routes.post('/single/remove', AdsController.removeAd);
-routes.post('/single/:adId/results/new', AdsController.createAdResults);
+routes.get('/spot', AdsController.getAds);
+routes.get('/spot/country/:countryName', AdsController.getCountryAds);
+routes.get('/spot/:adId', AdsController.getSingleAd);
+routes.post('/spot/new', AdsController.createAd);
+routes.post('/spot/update', AdsController.updateAd);
+routes.post('/spot/remove', AdsController.removeAd);
+routes.post('/spot/:adId/results/new', AdsController.createAdResults);
 // routes.get('/ads/:adId/results', AdsController.getAdResults);
 
 export default routes;

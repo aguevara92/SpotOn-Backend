@@ -27,7 +27,7 @@ export const getSingleAd = async (req, res) => {
     // If there's a match
     try {
         const thisResults = await Result.find({ VidDum: adId }); // get the results of this Ad
-        const thisKPIs = await KPI.find({ adID: adId }); // get the KPIs of this Ad
+        const thisKPIs = await KPI.findOne({ adID: adId }); // get the KPIs of this Ad
         return res.status(200).json({
             error: false,
             ad: thisAd[0], // return single ad
@@ -55,6 +55,21 @@ export const getAds = async (req, res) => {
     }
 };
 
+export const getCountryAds = async (req, res) => {
+    const { countryName } = req.params;
+    try {
+        return res.status(200).json({
+            country: countryName,
+            ads: await Ad.find({ country: countryName }),
+        });
+    } catch (e) {
+        return res.status(e.status).json({
+            error: true,
+            message: 'Error with Ads',
+        });
+    }
+};
+
 export const createAd = async (req, res) => {
     // Get the Vars from the POST body
     const {
@@ -69,9 +84,11 @@ export const createAd = async (req, res) => {
         channel,
         productionState,
         state,
+        summary,
+        mainMessage,
     } = req.body;
     // Create an instance of the Ad class
-    const newAd = new Ad({ adname, shortname, videourl, industry, brand, country, campaigndate, lengthAd, channel, productionState, state });
+    const newAd = new Ad({ adname, shortname, videourl, industry, brand, country, campaigndate, lengthAd, channel, productionState, state, summary, mainMessage });
 
     newAd.save((err, thisAd) => {
         if (err) {
@@ -97,9 +114,11 @@ export const updateAd = async (req, res) => {
         channel,
         productionState,
         state,
+        summary,
+        mainMessage,
     } = req.body;
     // Create an instance of the Ad class
-    const newAd = new Ad({ adname, shortname, videourl, industry, brand, country, campaigndate, lengthAd, channel, productionState, state });
+    const newAd = new Ad({ adname, shortname, videourl, industry, brand, country, campaigndate, lengthAd, channel, productionState, state, summary, mainMessage, });
 
     Ad.remove({ adname: req.body.adname }, () => {
         newAd.save((err, thisAd) => {
