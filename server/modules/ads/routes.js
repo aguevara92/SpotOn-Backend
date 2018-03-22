@@ -11,6 +11,8 @@ routes.post('/spot/new', AdsController.createAd);
 routes.post('/spot/update', AdsController.updateAd);
 routes.post('/spot/remove', AdsController.removeAd);
 routes.post('/spot/:adId/results/new', AdsController.createAdResults);
+
+routes.post('/spot/addExtraInfo/:adId', AdsController.addExtraInfo);
 // routes.get('/ads/:adId/results', AdsController.getAdResults);
 
 export default routes;

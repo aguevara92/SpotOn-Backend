@@ -1,5 +1,39 @@
 import mongoose, { Schema } from 'mongoose';
 
+const ToneOfVoice = new Schema({
+    witty: Number,
+    cool: Number,
+    trustworthy: Number,
+    inspiring: Number,
+    friendly: Number,
+    youthful: Number,
+    funny: Number,
+    easyGoing: Number,
+    boring: Number,
+    generic: Number,
+    silly: Number,
+    formal: Number,
+    shocking: Number,
+    aggressive: Number,
+    childish: Number,
+    pretentious: Number,
+}, { _id: false });
+
+const Emotion = new Schema({
+    excited: Number,
+    impressed: Number,
+    intrigued: Number,
+    entertained: Number,
+    informed: Number,
+    interested: Number,
+    indifferent: Number,
+    bored: Number,
+    confused: Number,
+    offended: Number,
+    annoyed: Number,
+    irritated: Number,
+}, { _id: false });
+
 const AdsSchema = new Schema({
     adname: {
         type: String,
@@ -11,39 +45,22 @@ const AdsSchema = new Schema({
         required: true,
         minlength: [5, 'The Short name must be 5 characters long'],
     },
-    videourl: {
-        type: String,
-    },
-    industry: {
-        type: String,
-    },
-    brand: {
-        type: String,
-    },
-    country: {
-        type: String,
-    },
-    campaigndate: {
-        type: String,
-    },
-    lengthAd: {
-        type: String,
-    },
-    channel: {
-        type: String,
-    },
-    productionState: {
-        type: String,
-    },
-    state: {
-        type: String,
-    },
-    summary: {
-        type: String,
-    },
-    mainMessage: {
-        type: String,
-    },
+    videourl: String,
+    industry: String,
+    brand: String,
+    country: String,
+    campaigndate: String,
+    lengthAd: String,
+    channel: String,
+    productionState: String,
+    state: String,
+    summary: String,
+    mainMessage: Number,
+    secondaryMessage: Number,
+    tertiaryMessage: Number,
+    sampleSize: Number,
+    toneOfVoice: ToneOfVoice,
+    emotion: Emotion,
 });
 
 /*

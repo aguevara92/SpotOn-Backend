@@ -2,6 +2,8 @@ import Ad from './model';
 import { Result } from '../results';
 import { KPI } from '../kpis';
 
+// -----------------
+// The function returns a single Ad
 export const getSingleAd = async (req, res) => {
     const { adId } = req.params;
 
@@ -42,6 +44,8 @@ export const getSingleAd = async (req, res) => {
     }
 };
 
+// -----------------
+// The function returns all Ads in the collection
 export const getAds = async (req, res) => {
     try {
         return res.status(200).json({
@@ -55,6 +59,8 @@ export const getAds = async (req, res) => {
     }
 };
 
+// -----------------
+// The function returns all Ads of the same country
 export const getCountryAds = async (req, res) => {
     const { countryName } = req.params;
     try {
@@ -70,6 +76,8 @@ export const getCountryAds = async (req, res) => {
     }
 };
 
+// -----------------
+// The function creates a new Ad collection
 export const createAd = async (req, res) => {
     // Get the Vars from the POST body
     const {
@@ -86,9 +94,27 @@ export const createAd = async (req, res) => {
         state,
         summary,
         mainMessage,
+        secondaryMessage,
+        tertiaryMessage,
     } = req.body;
     // Create an instance of the Ad class
-    const newAd = new Ad({ adname, shortname, videourl, industry, brand, country, campaigndate, lengthAd, channel, productionState, state, summary, mainMessage });
+    const newAd = new Ad({
+        adname,
+        shortname,
+        videourl,
+        industry,
+        brand,
+        country,
+        campaigndate,
+        lengthAd,
+        channel,
+        productionState,
+        state,
+        summary,
+        mainMessage,
+        secondaryMessage,
+        tertiaryMessage,
+    });
 
     newAd.save((err, thisAd) => {
         if (err) {
@@ -100,6 +126,8 @@ export const createAd = async (req, res) => {
     });
 };
 
+// -----------------
+// The function updates an Ad
 export const updateAd = async (req, res) => {
     // Get the Vars from the POST body
     const {
@@ -116,9 +144,27 @@ export const updateAd = async (req, res) => {
         state,
         summary,
         mainMessage,
+        secondaryMessage,
+        thirdMessage,
     } = req.body;
     // Create an instance of the Ad class
-    const newAd = new Ad({ adname, shortname, videourl, industry, brand, country, campaigndate, lengthAd, channel, productionState, state, summary, mainMessage, });
+    const newAd = new Ad({
+        adname,
+        shortname,
+        videourl,
+        industry,
+        brand,
+        country,
+        campaigndate,
+        lengthAd,
+        channel,
+        productionState,
+        state,
+        summary,
+        mainMessage,
+        secondaryMessage,
+        thirdMessage,
+    });
 
     Ad.remove({ adname: req.body.adname }, () => {
         newAd.save((err, thisAd) => {
@@ -132,6 +178,8 @@ export const updateAd = async (req, res) => {
     });
 };
 
+// -----------------
+// The function rmoves an Ad collection
 export const removeAd = async (req, res) => {
     Ad.remove({ adname: req.body.adname }, (err) => {
         if (err) {
@@ -144,6 +192,8 @@ export const removeAd = async (req, res) => {
     });
 };
 
+// -----------------
+// The function creates results for an Ad
 export const createAdResults = async (req, res) => {
     const { title, description } = req.body;
     const { adId } = req.params;
@@ -182,4 +232,87 @@ export const createAdResults = async (req, res) => {
             message: 'Ad cannot be created',
         });
     }
+};
+
+// -----------------
+// The function updates teh Ad collection an adds the number of tone of voices
+export const addExtraInfo = async (req, res) => {
+    const { adId } = req.params;
+    const {
+        witty,
+        cool,
+        trustworthy,
+        inspiring,
+        friendly,
+        youthful,
+        funny,
+        easyGoing,
+        boring,
+        generic,
+        silly,
+        formal,
+        shocking,
+        aggressive,
+        childish,
+        pretentious,
+        // ====
+        excited,
+        impressed,
+        intrigued,
+        entertained,
+        informed,
+        interested,
+        indifferent,
+        bored,
+        confused,
+        offended,
+        annoyed,
+        irritated,
+        // ====
+        sampleSize,
+    } = req.body;
+
+    Ad.findOneAndUpdate({ adname: adId },
+        { $set: {
+            toneOfVoice: {
+                witty,
+                cool,
+                trustworthy,
+                inspiring,
+                friendly,
+                youthful,
+                funny,
+                easyGoing,
+                boring,
+                generic,
+                silly,
+                formal,
+                shocking,
+                aggressive,
+                childish,
+                pretentious,
+
+            },
+            emotion: {
+                excited,
+                impressed,
+                intrigued,
+                entertained,
+                informed,
+                interested,
+                indifferent,
+                bored,
+                confused,
+                offended,
+                annoyed,
+                irritated,
+            },
+            sampleSize,
+        } },
+        { new: true },
+        (err, singleAd) => {
+            if (err) return res.status(400);
+            res.send(singleAd);
+        }
+    );
 };
