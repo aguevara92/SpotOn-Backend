@@ -23,7 +23,8 @@ app.use(cors());
 
 app.use('/api', [AdsRoutes, ResultRoutes, KPIsRoutes]);
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.MONGODB_PORT || 4000;
+// const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, err => {
     if (err) {

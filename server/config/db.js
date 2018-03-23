@@ -1,10 +1,13 @@
 import mongoose from 'mongoose';
 
 export default () => {
+    const uristring =
+    process.env.MONGODB_URI ||
+    'mongodb://localhost/spotOn';
+
     mongoose.Promise = global.Promise;
-    mongoose.connect(process.env.MONGODB_URI || 'localhost', 'spotOn');
-    // mongoose.connect('localhost', 'spotOn');
-    // mongoose.connect(process.env.MONGODB_URI);
+
+    mongoose.connect(uristring);
 
     mongoose.connection
         .once('open', () => console.log('MongoDB running'))
