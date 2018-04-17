@@ -1,7 +1,4 @@
-import Result from './model';
-import ResultRoutes from './routes';
+import Result from './model'
+import ResultRoutes from './routes'
 
-export {
-    ResultRoutes,
-    Result,
-};
+export { ResultRoutes, Result }

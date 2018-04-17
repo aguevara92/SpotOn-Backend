@@ -1,10 +1,10 @@
-import { Router } from 'express';
-import * as ResultController from './controller';
+import { Router } from 'express'
+import * as ResultController from './controller'
 
-const routes = new Router();
+const routes = new Router()
 
-routes.post('/results/new', ResultController.createResult);
-routes.get('/results', ResultController.getAllResults);
-routes.get('/results/:adId', ResultController.getResultsOfAd);
+routes.post('/results/new', ResultController.createResult)
+routes.get('/results', ResultController.getAllResults)
+routes.get('/results/:adId', ResultController.getResultsOfAd)
 
-export default routes;
+export default routes
