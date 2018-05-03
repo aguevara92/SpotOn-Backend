@@ -57,3 +57,23 @@ export const createUser = async (req, res) => {
 		res.status(201).send(thisUser)
 	})
 }
+
+// -----------------
+// The function updates teh Ad collection an adds the number of tone of voices
+export const updateProfileFirstTime = async (req, res) => {
+	const { userID } = req.params
+
+	User.findOneAndUpdate(
+		{ email: userID },
+		{
+			$set: {
+				firstTime: false
+			}
+		},
+		{ new: true },
+		(err, newProfile) => {
+			if (err) return res.status(400)
+			res.send(newProfile)
+		}
+	)
+}

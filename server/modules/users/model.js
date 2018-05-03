@@ -8,7 +8,11 @@ const UsersSchema = new Schema({
 		minlength: [5, 'Email must be 5 characters long']
 	},
 	countries: [String],
-	right: String
+	right: String,
+	firstTime: {
+		type: Boolean,
+		default: true
+	}
 })
 
 export default mongoose.model('User', UsersSchema)

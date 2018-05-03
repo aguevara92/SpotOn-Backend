@@ -7,5 +7,6 @@ const routes = new Router()
 routes.get('/user', UsersController.getUsers)
 routes.get('/user/:userID', UsersController.getSingleUser)
 routes.post('/user/new', UsersController.createUser)
+routes.get('/user/notFirstTime/:userID', UsersController.updateProfileFirstTime)
 
 export default routes
