@@ -59,7 +59,27 @@ export const createUser = async (req, res) => {
 }
 
 // -----------------
-// The function updates teh Ad collection an adds the number of tone of voices
+// The function updates the Ad collection and adds an Array of Strings with the adnames
+export const updateFavorites = async (req, res) => {
+	const { email, favourites } = req.body
+
+	User.findOneAndUpdate(
+		{ email: email },
+		{
+			$set: {
+				favourites: favourites
+			}
+		},
+		{ new: true },
+		(err, newProfile) => {
+			if (err) return res.status(400)
+			res.send(newProfile)
+		}
+	)
+}
+
+// -----------------
+// The function updates the Ad collection and toggles the first time key. This is for the Tour
 export const updateProfileFirstTime = async (req, res) => {
 	const { userID } = req.params
 

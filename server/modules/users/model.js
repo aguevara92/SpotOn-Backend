@@ -9,6 +9,7 @@ const UsersSchema = new Schema({
 	},
 	countries: [String],
 	right: String,
+	favourites: [String],
 	firstTime: {
 		type: Boolean,
 		default: true
