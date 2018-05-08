@@ -6,17 +6,27 @@ export const getSingleUser = async (req, res) => {
 	const { userID } = req.params
 
 	// Search for see if group exist
-	const thisUser = await User.findOne({ email: userID })
+	const thisUser = await User.findOne({ email: userID.toLowerCase() })
 
-	try {
-		return res.status(200).json({
-			user: thisUser // return single user
-		})
-	} catch (e) {
-		return res.status(500).json({
+	// If there's no match
+	if (!thisUser) {
+		return res.status(400).json({
 			error: true,
-			message: 'Cannot fetch user'
+			message: 'There is no match for ' + userID
 		})
+	} else {
+		// If there's a match
+		try {
+			return res.status(200).json({
+				user: thisUser // return single user
+			})
+		} catch (e) {
+			// Cant reach the server
+			return res.status(500).json({
+				error: true,
+				message: 'Cannot fetch user'
+			})
+		}
 	}
 }
 
