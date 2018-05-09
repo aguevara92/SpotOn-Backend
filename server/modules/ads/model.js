@@ -56,7 +56,7 @@ const AdsSchema = new Schema({
 	brand: String,
 	country: String,
 	campaigndate: String,
-	lengthAd: String,
+	lengthAd: Number,
 	channel: String,
 	productionState: String,
 	state: String,
