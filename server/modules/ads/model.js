@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose'
+import { KPI } from '../kpis'
 
 const ToneOfVoice = new Schema(
 	{
@@ -66,30 +67,8 @@ const AdsSchema = new Schema({
 	tertiaryMessage: Number,
 	sampleSize: Number,
 	toneOfVoice: ToneOfVoice,
-	emotion: Emotion
+	emotion: Emotion,
+	kpis: KPI
 })
-
-/*
-* Create a meetup and add it to the meetups array in the group
-*/
-
-AdsSchema.statics.addResult = async (id, args) => {
-	const Result = mongoose.model('Result')
-	// We add the group ID to the meetup group element
-	// Finally this is the author mof the meetup
-	const result = await new Result({ ...args, group: id })
-	// We found the group with the ID provide in the URL
-	// And we push the meetup ID in the meetups element
-	const ad = await this.findByIdAndUpdate(id, {
-		$push: { results: result.id }
-	})
-
-	// const result = await Promise.all([meetup.save(), group.save()]);
-
-	return {
-		result: await result.save(),
-		ad
-	}
-}
 
 export default mongoose.model('Ad', AdsSchema)

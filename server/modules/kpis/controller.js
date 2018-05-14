@@ -4,7 +4,10 @@ import { Ad } from '../ads'
 export const getKPIs = async (req, res) => {
 	try {
 		return res.status(200).json({
-			KPIs: await KPI.find({})
+			KPIs: await Ad.find(
+				{ kpis: { $nin: [{}, null, undefined] } },
+				{ kpis: 1, _id: 0 }
+			)
 		})
 	} catch (e) {
 		return res.status(e.status).json({
@@ -16,26 +19,14 @@ export const getKPIs = async (req, res) => {
 
 export const getKPIsOfCountry = async (req, res) => {
 	const { countryName } = req.params
+
 	try {
-		// Get Ads of Single Country
-		let ads = await Ad.find({ country: countryName })
-		ads = ads.map(a => a.adname)
-
-		// Get All KPIs
-		const allKPIs = await KPI.find({})
-
-		// Get Kpis of single country
-		let countryKPIs = ads.map(a => {
-			const rr = allKPIs.filter(k => {
-				return k.adID === a
-			})
-			return rr
-		})
-		countryKPIs = [].concat(...countryKPIs) // Flaten array
-
 		return res.status(200).json({
-			country: countryName,
-			KPIs: countryKPIs
+			KPIs: await Ad.find(
+				{ country: countryName, kpis: { $nin: [{}, null, undefined] } },
+				{ kpis: 1, _id: 0 }
+			),
+			country: countryName
 		})
 	} catch (e) {
 		return res.status(e.status).json({
@@ -48,7 +39,7 @@ export const getKPIsOfCountry = async (req, res) => {
 export const createKPI = async (req, res) => {
 	// Get the Vars from the POST body
 	const {
-		adID,
+		adname,
 		brandRecall,
 		adAppeal,
 		toneOfVoice,
@@ -65,31 +56,32 @@ export const createKPI = async (req, res) => {
 		total
 	} = req.body
 
-	// Create an instance of the Ad class
-	const newKPI = new KPI({
-		adID,
-		brandRecall,
-		adAppeal,
-		toneOfVoice,
-		emotion,
-		uniqueness,
-		relevance,
-		shareability,
-		callToAction,
-		messaging,
-		brandFit,
-		brandRelevance,
-		viewerEngagement,
-		adMessage,
-		total
-	})
-
-	newKPI.save((err, thisKPI) => {
-		if (err) {
-			// If there is an error, show it
-			res.status(500).send(err)
+	Ad.findOneAndUpdate(
+		{ adname: adname },
+		{
+			$set: {
+				kpis: {
+					brandRecall,
+					adAppeal,
+					toneOfVoice,
+					emotion,
+					uniqueness,
+					relevance,
+					shareability,
+					callToAction,
+					messaging,
+					brandFit,
+					brandRelevance,
+					viewerEngagement,
+					adMessage,
+					total
+				}
+			}
+		},
+		{ new: true },
+		(err, singleAd) => {
+			if (err) return res.status(400)
+			res.send(singleAd)
 		}
-		// If there are no errors, show in the console the Ad created
-		res.status(201).send(thisKPI)
-	})
+	)
 }

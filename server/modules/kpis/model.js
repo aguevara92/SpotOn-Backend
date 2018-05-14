@@ -1,53 +1,23 @@
 import mongoose, { Schema } from 'mongoose'
 
-const KPIsSchema = new Schema({
-	adID: {
-		type: String,
-		unique: true,
-		minlength: [5, 'Ad name must be 5 characters long']
+const KPI = new Schema(
+	{
+		brandRecall: Number,
+		adAppeal: Number,
+		toneOfVoice: Number,
+		emotion: Number,
+		uniqueness: Number,
+		relevance: Number,
+		shareability: Number,
+		callToAction: Number,
+		messaging: Number,
+		brandFit: Number,
+		brandRelevance: Number,
+		viewerEngagement: Number,
+		adMessage: Number,
+		total: Number
 	},
-	brandRecall: {
-		type: Number
-	},
-	adAppeal: {
-		type: Number
-	},
-	toneOfVoice: {
-		type: Number
-	},
-	emotion: {
-		type: Number
-	},
-	uniqueness: {
-		type: Number
-	},
-	relevance: {
-		type: Number
-	},
-	shareability: {
-		type: Number
-	},
-	callToAction: {
-		type: Number
-	},
-	messaging: {
-		type: Number
-	},
-	brandFit: {
-		type: Number
-	},
-	brandRelevance: {
-		type: Number
-	},
-	viewerEngagement: {
-		type: Number
-	},
-	adMessage: {
-		type: Number
-	},
-	total: {
-		type: Number
-	}
-})
+	{ _id: false }
+)
 
-export default mongoose.model('KPI', KPIsSchema)
+export default KPI
