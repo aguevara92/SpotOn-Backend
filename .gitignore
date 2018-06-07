@@ -1,3 +1,5 @@
 node_modules/
 .expo/
 npm-debug.*
+sendgrid.env
+sendgrid.env

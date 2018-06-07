@@ -39,8 +39,50 @@ export const getResultsOfAd = async (req, res) => {
 		})
 	}
 
-	// Search for see if group exist
+	// Search
 	const thisResults = await Result.find({ VidDum: adId })
+
+	// If there's no match
+	if (!(thisResults.length > 0)) {
+		return res.status(400).json({
+			error: true,
+			message: 'There is no match'
+		})
+	} else {
+		// If there's a match
+		try {
+			return res.status(200).json({
+				error: false,
+				results: thisResults
+			})
+		} catch (e) {
+			return res.status(500).json({
+				error: true,
+				message: 'Cannot fetch result'
+			})
+		}
+	}
+}
+
+export const getResultsOfVariousAds = async (req, res) => {
+	const { adIDs } = req.body
+
+	// Check if there is an ID provided in the URL
+	if (!adIDs) {
+		return res.status(400).json({
+			error: true,
+			message: 'You need to provide an ad ID'
+		})
+	}
+
+	// Search
+	const thisResults = await Result.find(
+		{
+			VidDum: {
+				$in: adIDs
+			}
+		}
+	)
 
 	// If there's no match
 	if (!(thisResults.length > 0)) {

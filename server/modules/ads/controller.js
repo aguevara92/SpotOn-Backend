@@ -1,5 +1,6 @@
 import Ad from './model'
 import { KPI } from '../kpis'
+import { sendEmail } from '../email'
 
 // -----------------
 // The function returns a single Ad
@@ -66,6 +67,25 @@ export const getCountryAds = async (req, res) => {
 // -----------------
 // The function creates a new Ad collection
 export const createAd = async (req, res) => {
+	// Get the Vars from the POST body
+	const { ads } = req.body
+
+
+	try {
+		Ad.insertMany(ads, (error, docs) => {
+			sendEmail(ads)
+			return res.status(200).json({
+				ads: 'Ads created'
+			})
+		})
+	} catch (e) {
+		console.log(e)
+	}
+}
+
+// -----------------
+// The function creates a new Ad collection
+export const createSingleAd = async (req, res) => {
 	// Get the Vars from the POST body
 	const {
 		adname,

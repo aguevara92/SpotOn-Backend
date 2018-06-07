@@ -12,5 +12,6 @@ routes.post(
 )
 routes.get('/results', ResultController.getAllResults)
 routes.get('/results/:adId', ResultController.getResultsOfAd)
+routes.post('/results/various', ResultController.getResultsOfVariousAds)
 
 export default routes

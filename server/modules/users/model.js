@@ -1,5 +1,13 @@
 import mongoose, { Schema } from 'mongoose'
 
+const subscriptions = new Schema(
+	{
+		brands: [String],
+		industries: [String]
+	},
+	{ _id: false }
+)
+
 const UsersSchema = new Schema({
 	email: {
 		type: String,
@@ -9,11 +17,12 @@ const UsersSchema = new Schema({
 	},
 	countries: [String],
 	right: String,
-	favourites: [String],
 	firstTime: {
 		type: Boolean,
 		default: true
-	}
+	},
+	favourites: [String],
+	subscriptions: subscriptions
 })
 
 export default mongoose.model('User', UsersSchema)

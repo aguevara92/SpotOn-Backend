@@ -48,7 +48,6 @@ export const getUsers = async (req, res) => {
 // -----------------
 // The function creates a new User collection
 export const createUser = async (req, res) => {
-	console.log(req.body)
 	// Get the Vars from the POST body
 	const { email, countries, right } = req.body
 	// Create an instance of the User class
@@ -66,6 +65,50 @@ export const createUser = async (req, res) => {
 		// If there are no errors, show in the console the User created
 		res.status(201).send(thisUser)
 	})
+}
+
+// -----------------
+// The function creates a new User collection
+export const removeUser = async (req, res) => {
+	const { userID } = req.params
+
+	User.remove({ email: userID }, err => {
+		if (err) {
+			// If there is an error, show it
+			res
+				.status(500)
+				.send(err)
+				.json({
+					error: true,
+					message: 'There was ab=n error in the server'
+				})
+		} else {
+			// If there are no errors, show in the console
+			res
+				.status(200)
+				.json({ error: false, message: 'The User was deleted' })
+		}
+	})
+}
+
+// -----------------
+// The function updates the Ad collection and toggles the first time key. This is for the Tour
+export const updateProfileFirstTime = async (req, res) => {
+	const { userID } = req.params
+
+	User.findOneAndUpdate(
+		{ email: userID },
+		{
+			$set: {
+				firstTime: false
+			}
+		},
+		{ new: true },
+		(err, newProfile) => {
+			if (err) return res.status(400)
+			res.send(newProfile)
+		}
+	)
 }
 
 // -----------------
@@ -89,21 +132,25 @@ export const updateFavorites = async (req, res) => {
 }
 
 // -----------------
-// The function updates the Ad collection and toggles the first time key. This is for the Tour
-export const updateProfileFirstTime = async (req, res) => {
+// The function updates teh Ad collection an adds the number of tone of voices
+export const addSubscriptions = async (req, res) => {
 	const { userID } = req.params
+	const { brands, industries } = req.body
 
 	User.findOneAndUpdate(
 		{ email: userID },
 		{
 			$set: {
-				firstTime: false
+				subscriptions: {
+					brands,
+					industries
+				}
 			}
 		},
 		{ new: true },
-		(err, newProfile) => {
+		(err, singleUser) => {
 			if (err) return res.status(400)
-			res.send(newProfile)
+			res.send(singleUser)
 		}
 	)
 }
