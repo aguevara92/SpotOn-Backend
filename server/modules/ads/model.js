@@ -66,6 +66,7 @@ const AdsSchema = new Schema({
 	secondaryMessage: Number,
 	tertiaryMessage: Number,
 	sampleSize: Number,
+	CPA_name: String,
 	toneOfVoice: ToneOfVoice,
 	emotion: Emotion,
 	kpis: KPI

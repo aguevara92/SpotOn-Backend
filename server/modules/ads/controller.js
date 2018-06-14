@@ -70,7 +70,6 @@ export const createAd = async (req, res) => {
 	// Get the Vars from the POST body
 	const { ads } = req.body
 
-
 	try {
 		Ad.insertMany(ads, (error, docs) => {
 			sendEmail(ads)
@@ -102,7 +101,8 @@ export const createSingleAd = async (req, res) => {
 		summary,
 		mainMessage,
 		secondaryMessage,
-		tertiaryMessage
+		tertiaryMessage,
+		CPA_name
 	} = req.body
 	// Create an instance of the Ad class
 	const newAd = new Ad({
@@ -120,7 +120,8 @@ export const createSingleAd = async (req, res) => {
 		summary,
 		mainMessage,
 		secondaryMessage,
-		tertiaryMessage
+		tertiaryMessage,
+		CPA_name
 	})
 
 	newAd.save((err, thisAd) => {
@@ -152,7 +153,8 @@ export const updateAd = async (req, res) => {
 		summary,
 		mainMessage,
 		secondaryMessage,
-		thirdMessage
+		thirdMessage,
+		CPA_name
 	} = req.body
 	// Create an instance of the Ad class
 	const newAd = new Ad({
@@ -170,7 +172,8 @@ export const updateAd = async (req, res) => {
 		summary,
 		mainMessage,
 		secondaryMessage,
-		thirdMessage
+		thirdMessage,
+		CPA_name
 	})
 
 	Ad.remove({ adname: req.body.adname }, () => {
@@ -194,9 +197,10 @@ export const removeAd = async (req, res) => {
 			res.status(500).send(err)
 		} else {
 			// If there are no errors, show in the console
-			res
-				.status(200)
-				.json({ error: false, message: 'The Ad was deleted' })
+			res.status(200).json({
+				error: false,
+				message: 'The Ad was deleted'
+			})
 		}
 	})
 }

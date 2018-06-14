@@ -2,9 +2,7 @@
 import { User } from '../users'
 var _ = require('lodash')
 var request = require('request')
-
-const brazeURL = 'https://rest.iad-01.braze.com'
-const api_key = '79942222-6df9-4c30-aeb0-d6f043987ae3'
+require('dotenv').config()
 
 export const syncUsersBraze = async () => {
 	let allUsers = await User.find({})
@@ -28,12 +26,12 @@ export const syncUsersBraze = async () => {
 	//console.log(usersToAdd)
 
 	const trackUsers = {
-		api_key: api_key,
+		api_key: process.env.BRAZE_API_KEY,
 		attributes: usersToAdd
 	}
 
 	request.post(
-		brazeURL + '/users/track',
+		process.env.BRAZE_URL + '/users/track',
 		{ json: trackUsers },
 		(error, response, body) => {
 			if (!error && response.statusCode == 200) {
@@ -56,13 +54,13 @@ export const brazeApiEmail = async users => {
 	//console.log(usersToSend)
 
 	const triggerEmail = {
-		api_key: api_key,
+		api_key: process.env.BRAZE_API_KEY,
 		campaign_id: '2b5c86f1-edc4-2ffb-5949-f126cae0a6c5',
 		recipients: usersToSend
 	}
 
 	request.post(
-		brazeURL + '/campaigns/trigger/send',
+		process.env.BRAZE_URL + '/campaigns/trigger/send',
 		{ json: triggerEmail },
 		(error, response, body) => {
 			if (!error && response.statusCode == 200) {

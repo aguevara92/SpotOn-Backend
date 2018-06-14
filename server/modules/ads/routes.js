@@ -8,6 +8,7 @@ routes.get('/spot', AdsController.getAds)
 routes.get('/spot/country/:countryName', AdsController.getCountryAds)
 routes.get('/spot/:adId', AdsController.getSingleAd)
 routes.post('/spot/new', AdsController.createAd)
+routes.post('/spot/new/single', AdsController.createSingleAd)
 routes.post('/spot/update', AdsController.updateAd)
 routes.post('/spot/remove', AdsController.removeAd)
 

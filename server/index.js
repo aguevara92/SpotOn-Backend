@@ -6,7 +6,8 @@ import {
 	ResultRoutes,
 	KPIsRoutes,
 	UsersRoutes,
-	EmailRoutes
+	EmailRoutes,
+	S3Routes
 } from './modules'
 
 const app = express()
@@ -23,7 +24,14 @@ middlewareConfig(app)
 app.options('*', cors())
 app.use(cors())
 
-app.use('/api', [AdsRoutes, ResultRoutes, KPIsRoutes, UsersRoutes, EmailRoutes])
+app.use('/api', [
+	AdsRoutes,
+	ResultRoutes,
+	KPIsRoutes,
+	UsersRoutes,
+	EmailRoutes,
+	S3Routes
+])
 
 // const PORT = process.env.MONGODB_PORT || 4000;
 const PORT = process.env.PORT || 4000
