@@ -15,10 +15,10 @@ export const syncUsersBraze = async () => {
 		user.right = thisUser.right
 		if (thisUser.subscriptions !== undefined) {
 			user.industries = thisUser.subscriptions.industries
-			user.brands = thisUser.subscriptions.brands
+			user.countries = thisUser.subscriptions.countries
 		} else {
 			user.industries = []
-			user.brands = []
+			user.countries = []
 		}
 		usersToAdd.push(user)
 	}
@@ -79,18 +79,18 @@ export const brazeApiEmail = async users => {
 export const sendEmail = async ads => {
 	/* Calculate the subscriptions of the ads
 	- Group the subscriptions by country
-	- gets all the different values of 'induestries' and 'brands'
+	- gets all the different values of 'induestries' and 'countries'
 	*/
 	let subscriptions = {}
 	for (let i = 0; i < ads.length; i++) {
 		let currentObject = ads[i]
 		subscriptions[currentObject.country] = subscriptions[
 			currentObject.country
-		] || { industries: [], brands: [] }
+		] || { industries: [], countries: [] }
 		subscriptions[currentObject.country].industries.push(
 			currentObject.industry
 		)
-		subscriptions[currentObject.country].brands.push(currentObject.brand)
+		subscriptions[currentObject.country].countries.push(currentObject.brand)
 	}
 
 	/* Get all users that has a subscriptions that matches

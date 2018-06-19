@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose'
 
 const subscriptions = new Schema(
 	{
-		brands: [String],
+		countries: [String],
 		industries: [String]
 	},
 	{ _id: false }

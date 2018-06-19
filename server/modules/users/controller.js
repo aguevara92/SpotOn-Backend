@@ -50,11 +50,19 @@ export const getUsers = async (req, res) => {
 export const createUser = async (req, res) => {
 	// Get the Vars from the POST body
 	const { email, countries, right } = req.body
+
+	// If the user has limited rights, it will automatically add the cuntry subscription
+	const countriesSubs = right === 'limited' ? countries : []
+
 	// Create an instance of the User class
 	const newUser = new User({
 		email,
 		countries,
-		right
+		right,
+		subscriptions: {
+			countries: countriesSubs,
+			industries: []
+		}
 	})
 
 	newUser.save((err, thisUser) => {
@@ -75,8 +83,7 @@ export const removeUser = async (req, res) => {
 	User.remove({ email: userID }, err => {
 		if (err) {
 			// If there is an error, show it
-			res
-				.status(500)
+			res.status(500)
 				.send(err)
 				.json({
 					error: true,
@@ -84,9 +91,10 @@ export const removeUser = async (req, res) => {
 				})
 		} else {
 			// If there are no errors, show in the console
-			res
-				.status(200)
-				.json({ error: false, message: 'The User was deleted' })
+			res.status(200).json({
+				error: false,
+				message: 'The User was deleted'
+			})
 		}
 	})
 }
@@ -135,14 +143,14 @@ export const updateFavorites = async (req, res) => {
 // The function updates teh Ad collection an adds the number of tone of voices
 export const addSubscriptions = async (req, res) => {
 	const { userID } = req.params
-	const { brands, industries } = req.body
+	const { countries, industries } = req.body
 
 	User.findOneAndUpdate(
 		{ email: userID },
 		{
 			$set: {
 				subscriptions: {
-					brands,
+					countries,
 					industries
 				}
 			}
