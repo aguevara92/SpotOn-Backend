@@ -64,22 +64,106 @@ export const getCountryAds = async (req, res) => {
 	}
 }
 
-// -----------------
-// The function creates a new Ad collection
-export const createAd = async (req, res) => {
-	// Get the Vars from the POST body
+/**
+ * Gets an array of Ads and
+ * 	- Updates the existing ones
+ *  - Creates them if doesnt exist
+ * This allow the user to upload the CSV with old ads without
+ * worrying of breaking the app
+ *
+ * @param {Array} { ads }              Array of object of Ads
+ */
+export const createAds = async (req, res) => {
+	// Gets the array of ads
 	const { ads } = req.body
 
-	try {
-		Ad.insertMany(ads, (error, docs) => {
-			sendEmail(ads)
+	// In here will be stored the details of this method
+	let notCreatedAds = []
+	let createdAds = []
+	let updatedAds = []
+
+	// Counter of ads processed for the async functions
+	let adsProcessed = 0
+	// The callback is called everytime an ads is created or updated
+	callback = () => {
+		adsProcessed++
+		// If it was the last ad on the array
+		if (adsProcessed === ads.length) {
+			// Send an email about the newly created ads
+			sendEmail(createdAds)
+			// Send a response to the user
 			return res.status(200).json({
-				ads: 'Ads created'
+				createAds: createdAds,
+				updatedAds: updatedAds,
+				notCreated: notCreatedAds
 			})
-		})
-	} catch (e) {
-		console.log(e)
+		}
 	}
+
+	// For each Ad in the array
+	ads.forEach(thisAd => {
+		const {
+			adname,
+			shortname,
+			videourl,
+			industry,
+			brand,
+			country,
+			campaigndate,
+			lengthAd,
+			channel,
+			productionState,
+			state,
+			summary,
+			mainMessage,
+			secondaryMessage,
+			tertiaryMessage,
+			CPA_name
+		} = thisAd
+
+		// Firts try to update the Ad
+		Ad.update(
+			{ adname: adname },
+			{
+				shortname,
+				videourl,
+				industry,
+				brand,
+				country,
+				campaigndate,
+				lengthAd,
+				channel,
+				productionState,
+				state,
+				summary,
+				mainMessage,
+				secondaryMessage,
+				tertiaryMessage,
+				CPA_name
+			},
+			(err, affected, rawResponse) => {
+				// If there was no Ad updated or an error
+				if (affected.n === 0 || err) {
+					// try to create a new Ad
+					const newAd = new Ad(thisAd)
+					newAd.save((e, singleAd) => {
+						if (e) {
+							// If it couldn't be created
+							notCreatedAds.push(thisAd)
+							callback()
+						}
+						// If it was succesfuly created
+						createdAds.push(thisAd)
+						callback()
+					})
+				} else {
+					// if it was succesfully updated
+					updatedAds.push(thisAd)
+					callback()
+				}
+			}
+		)
+	})
 }
 
 // -----------------

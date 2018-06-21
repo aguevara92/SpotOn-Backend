@@ -3,7 +3,6 @@ import Result from './model'
 export const createResult = async (req, res) => {
 	// Get the Vars from the POST body
 	const { results } = req.body
-
 	try {
 		Result.insertMany(results, (error, docs) => {
 			return res.status(200).json({
@@ -76,13 +75,11 @@ export const getResultsOfVariousAds = async (req, res) => {
 	}
 
 	// Search
-	const thisResults = await Result.find(
-		{
-			VidDum: {
-				$in: adIDs
-			}
+	const thisResults = await Result.find({
+		VidDum: {
+			$in: adIDs
 		}
-	)
+	})
 
 	// If there's no match
 	if (!(thisResults.length > 0)) {
