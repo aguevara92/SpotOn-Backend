@@ -85,7 +85,7 @@ export const createAds = async (req, res) => {
 	// Counter of ads processed for the async functions
 	let adsProcessed = 0
 	// The callback is called everytime an ads is created or updated
-	callback = () => {
+	function callback() {
 		adsProcessed++
 		// If it was the last ad on the array
 		if (adsProcessed === ads.length) {
