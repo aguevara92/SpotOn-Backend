@@ -35,7 +35,6 @@ app.use('/api', [
 
 // const PORT = process.env.MONGODB_PORT || 4000;
 const PORT = process.env.PORT || 4000
-console.log(`the port is ${PORT}`)
 
 app.listen(PORT, err => {
 	if (err) {
