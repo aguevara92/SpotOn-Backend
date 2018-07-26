@@ -1,4 +1,5 @@
 import User from './model'
+import { brazeApiNewUserEmail } from '../email'
 
 // -----------------
 // The function returns a single User
@@ -51,8 +52,16 @@ export const createUser = async (req, res) => {
 	// Get the Vars from the POST body
 	const { email, countries, right } = req.body
 
-	// If the user has limited rights, it will automatically add the cuntry subscription
+	// If the user has limited rights, it will automatically add the country subscription
 	const countriesSubs = right === 'limited' ? countries : []
+
+	// If the user has admin rights, it will automatically add all the industries subscription
+	const industriesSubs = right === 'admin' ? [
+		"Food delivery",
+		"Ofline food",
+		"Non-online ordering",
+		"Online ordering"
+	] : []
 
 	// Create an instance of the User class
 	const newUser = new User({
@@ -61,7 +70,7 @@ export const createUser = async (req, res) => {
 		right,
 		subscriptions: {
 			countries: countriesSubs,
-			industries: []
+			industries: industriesSubs
 		}
 	})
 
@@ -72,7 +81,9 @@ export const createUser = async (req, res) => {
 		}
 		// If there are no errors, show in the console the User created
 		res.status(201).send(thisUser)
+		brazeApiNewUserEmail(email)
 	})
+
 }
 
 // -----------------

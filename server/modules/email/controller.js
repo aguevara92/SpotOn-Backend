@@ -6,6 +6,7 @@ require('dotenv').config()
 
 export const syncUsersBraze = async () => {
 	let allUsers = await User.find({})
+	console.log(allUsers)
 	let usersToAdd = []
 	for (let i = 0; i < allUsers.length; i++) {
 		const thisUser = allUsers[i]
@@ -69,6 +70,34 @@ export const brazeApiEmail = async users => {
 		}
 	)
 }
+
+export const brazeApiNewUserEmail = async (emailAddress) => {
+	await syncUsersBraze();
+
+	let usersToSend = [{
+		external_user_id: emailAddress
+	}]
+
+	console.log(emailAddress)
+	console.log(process.env.BRAZE_API_KEY)
+
+	const triggerEmail = {
+		api_key: process.env.BRAZE_API_KEY,
+		campaign_id: 'fc2e23c4-0df3-411e-92d2-f0cd494f12a3',
+		recipients: usersToSend
+	}
+
+	request.post(
+		process.env.BRAZE_URL + '/campaigns/trigger/send',
+		{ json: triggerEmail },
+		(error, response, body) => {
+			if (!error && response.statusCode == 200) {
+				console.log(body)
+			}
+		}
+	)
+}
+
 
 /**
  * Get all the ads, and compare the subscriptions of the users.
