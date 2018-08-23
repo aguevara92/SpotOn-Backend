@@ -15,14 +15,15 @@ export const getObject = async (req, res) => {
 
 	var getParams = {
 		Bucket: 'tvsquared-export-spoton', // your bucket name,
-		Key: 'dim_countries.csv' // path to the object you're looking for
+		Key: 'spots_details.csv000' // path to the object you're looking for
 	}
 
 	let objectData = []
 
-	s3.getObject(getParams, async function(err, data) {
+	s3.getObject(getParams, async function (err, data) {
 		// Handle any error and exit
 		if (err) {
+			console.log('error in S3')
 			console.log(err)
 			return error
 		}
@@ -38,6 +39,29 @@ export const getObject = async (req, res) => {
 		})
 			.fromString(csvString)
 			.then(csvArray => {
+
+				let header = [
+					'source_id',
+					'management_entity',
+					'display_name',
+					'company_name',
+					'country_name',
+					'spot_name',
+					'grp',
+					'costs_eur',
+					'costs_usd',
+					'costs_lc',
+					'acquisitions',
+					'acquisition_desktop',
+					'acquisitions_app',
+					'first_time_aired',
+					'last_time_aired',
+					'datediff',
+					'times_aired'
+				]
+				csvArray.unshift(header)
+
+				//console.log(csvArray)
 				var jsonObj = []
 				var headers = csvArray[0]
 				for (var i = 1; i < csvArray.length; i++) {
@@ -52,11 +76,13 @@ export const getObject = async (req, res) => {
 					jsonObj.push(obj)
 				}
 				JSON.stringify(jsonObj)
+				console.log(jsonObj)
 
 				objectData = _.keyBy(jsonObj, 'spot_name')
 
 				// Get the object from the request
 				let thisAd = objectData[adID]
+				console.log('thisAd')
 				console.log(thisAd)
 				if (!_.isEmpty(thisAd)) {
 					// Fix the formating of the number
