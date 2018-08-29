@@ -4,9 +4,18 @@ var _ = require('lodash')
 var request = require('request')
 require('dotenv').config()
 
+/*
+Braze API forces us to have the users in Braze before sending a Campaign.
+This step syncs the users in the DB to the user in Braze. 
+It passes {
+	external_id ((email))
+	email
+	right
+	subscriptions {industries, countries}
+}
+*/
 export const syncUsersBraze = async () => {
 	let allUsers = await User.find({})
-	console.log(allUsers)
 	let usersToAdd = []
 	for (let i = 0; i < allUsers.length; i++) {
 		const thisUser = allUsers[i]
@@ -23,8 +32,6 @@ export const syncUsersBraze = async () => {
 		}
 		usersToAdd.push(user)
 	}
-	//console.log('usersToAdd')
-	//console.log(usersToAdd)
 
 	const trackUsers = {
 		api_key: process.env.BRAZE_API_KEY,
@@ -42,7 +49,7 @@ export const syncUsersBraze = async () => {
 	)
 }
 
-export const brazeApiEmail = async users => {
+export const brazeApiEmail = async (users, country) => {
 	let usersToSend = []
 	for (let i = 0; i < users.length; i++) {
 		const thisEmail = users[i]
@@ -51,13 +58,14 @@ export const brazeApiEmail = async users => {
 		}
 		usersToSend.push(user)
 	}
-	//console.log('usersToSend')
-	//console.log(usersToSend)
 
 	const triggerEmail = {
 		api_key: process.env.BRAZE_API_KEY,
 		campaign_id: '2b5c86f1-edc4-2ffb-5949-f126cae0a6c5',
-		recipients: usersToSend
+		recipients: usersToSend,
+		trigger_properties: {
+			"country": country
+		}
 	}
 
 	request.post(
@@ -77,9 +85,6 @@ export const brazeApiNewUserEmail = async (emailAddress) => {
 	let usersToSend = [{
 		external_user_id: emailAddress
 	}]
-
-	console.log(emailAddress)
-	console.log(process.env.BRAZE_API_KEY)
 
 	const triggerEmail = {
 		api_key: process.env.BRAZE_API_KEY,
@@ -165,6 +170,7 @@ export const sendEmail = async ads => {
 	// Fires the sync user braze
 	await syncUsersBraze()
 
-	// Fires the campaign in braze
-	await brazeApiEmail(emails)
+	// Fires the campaign in braze, passing the emials to send and the country of the ads
+	let country = ads[0].country
+	await brazeApiEmail(emails, country)
 }
